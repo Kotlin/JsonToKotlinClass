@@ -1,3 +1,8 @@
+# JsonToKotlinClass For Kotlin Notebooks
+This is a fork of [wuseal/JsonToKotlinClass](https://github.com/wuseal/JsonToKotlinClass/) library, tailored for use in [HTTP Utilities](https://github.com/Kotlin/kotlin-jupyter-http-util) for [Kotlin Jupyter](https://github.com/Kotlin/kotlin-jupyter).
+
+Below goes the original description.
+
 ![JsonToKotlinClass](https://raw.githubusercontent.com/wuseal/JsonToKotlinClass/master/doc/title.png)
 
 [![Build Status](https://travis-ci.com/wuseal/JsonToKotlinClass.svg?branch=master&status=started)](https://travis-ci.com/wuseal/JsonToKotlinClass)
@@ -16,7 +21,7 @@ Hi, Welcome! This is a plugin to generate Kotlin `data class` from JSON string, 
 We also have a `Java/Kotlin` [library](doc/LIBRARY.md). With this you can generate Kotlin `data class` from JSON string **programmatically**. 
 
 ```groovy
-implementation 'com.sealwu.jsontokotlin:library:3.7.4'
+implementation 'com.sealwu.jsontokotlin:library:3.7.4-jb1'
 ```
 
 ### Overview

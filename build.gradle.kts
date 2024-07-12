@@ -1,3 +1,4 @@
+import org.gradle.jvm.tasks.Jar
 import org.hildan.github.changelog.builder.DEFAULT_TIMEZONE
 import org.hildan.github.changelog.builder.SectionDefinition
 import org.jetbrains.changelog.closure
@@ -16,7 +17,7 @@ plugins {
     id("org.hildan.github.changelog") version "1.6.0"
 }
 group = "wu.seal"
-version = System.getenv("TAG") ?: "Unreleased"
+version = "3.7.4-jb1"
 
 intellij {
     version = "2017.1"
@@ -92,4 +93,32 @@ task("createGithubReleaseNotes") {
             .substringAfter("**").substringBefore("##").trim()
         githubReleaseNoteFile.writeText(content)
     }
+}
+
+val jarTask = tasks.getByName("jar")
+val classesTask = tasks.getByName("classes")
+val javadocTask = tasks.getByName("javadoc")
+
+val sourcesJarTask = tasks.create("sourcesJar", Jar::class) {
+    dependsOn(classesTask)
+    archiveClassifier.set("sources")
+    from(sourceSets.main.get().allSource)
+}
+
+val javadocJarTask = tasks.create("javadocJar", Jar::class) {
+    dependsOn(javadocTask)
+    archiveClassifier.set("javadoc")
+    from(javadocTask)
+}
+
+val cleanLibraryLibsTask = task("cleanLibraryLibs", Delete::class) {
+    delete("$rootDir/library/libs")
+}
+
+task("putJarIntoLibraryLibs", Copy::class) {
+    dependsOn(jarTask, sourcesJarTask, javadocJarTask, cleanLibraryLibsTask)
+    from(jarTask)
+    from(sourcesJarTask)
+    from(javadocJarTask)
+    into("$rootDir/library/libs")
 }

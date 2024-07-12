@@ -2,7 +2,6 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.72'
     id 'maven'
     id 'maven-publish'
-    id 'signing'
 }
 
 repositories {
@@ -18,7 +17,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     // Core library
-    compile files('libs/JsonToKotlinClass-3.7.4.jar')
+    compile files("libs/JsonToKotlinClass-${version}.jar")
 
     // Gson : Gson
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -39,12 +38,14 @@ jar {
 task sourcesJar(type: Jar, dependsOn: classes) {
     archiveClassifier.set('sources')
     from sourceSets.main.allSource
+    from zipTree("libs/JsonToKotlinClass-${project.version}-sources.jar")
 }
 
 javadoc.failOnError = false
 task javadocJar(type: Jar, dependsOn: javadoc) {
     archiveClassifier.set('javadoc')
     from javadoc.destinationDir
+    from zipTree("libs/JsonToKotlinClass-${project.version}-javadoc.jar")
 }
 
 compileKotlin {
@@ -75,6 +76,11 @@ def pomConfig = {
             name "wuseal"
             email "wusealking@gmail.com"
         }
+        developer {
+            id "ark-1"
+            name "ark-1"
+            email "arkadiy.bazhanov@jetbrains.com"
+        }
     }
 
     scm {
@@ -93,8 +99,8 @@ publishing {
             artifact javadocJar {
                 classifier "javadoc"
             }
-            groupId 'com.sealwu.jsontokotlin'
-            artifactId 'library'
+            groupId 'org.jetbrains.kotlinx'
+            artifactId 'json-to-kotlin-library'
             version "$versions.j2k_version"
             pom.withXml {
                 def root = asNode()
@@ -105,17 +111,15 @@ publishing {
             }
         }
     }
+
     repositories {
         maven {
-            name 'mavenCentral'
-            // change URLs to point to your repos, e.g. http://my.org/repo
-            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-            def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-            credentials(PasswordCredentials)
+            url = "https://packages.jetbrains.team/maven/p/kds/kotlin-ds-maven"
+            name = "jbTeam"
+            credentials {
+                username = System.getenv("SPACE_USERNAME") ?: ""
+                password = System.getenv("SPACE_TOKEN") ?: ""
+            }
         }
     }
-}
-signing {
-    sign publishing.publications.mavenPublication
 }
