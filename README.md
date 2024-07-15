@@ -1,4 +1,4 @@
-# JsonToKotlinClass For Kotlin Notebooks
+# JsonToKotlinClass for Kotlin Notebooks
 This is a fork of [wuseal/JsonToKotlinClass](https://github.com/wuseal/JsonToKotlinClass/) library, tailored for use in [HTTP Utilities](https://github.com/Kotlin/kotlin-jupyter-http-util) for [Kotlin Jupyter](https://github.com/Kotlin/kotlin-jupyter).
 
 Below goes the original description.
