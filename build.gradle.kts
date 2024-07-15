@@ -17,7 +17,7 @@ plugins {
     id("org.hildan.github.changelog") version "1.6.0"
 }
 group = "wu.seal"
-version = "3.7.4-jb1"
+version = "3.7.4-jb" + (properties["build_counter"] ?: "-dev")
 
 intellij {
     version = "2017.1"
